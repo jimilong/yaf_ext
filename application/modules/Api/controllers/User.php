@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 class UserController extends \Yaf\Controller_Abstract {
 
     public function indexAction($name = "Stranger22") {
@@ -18,7 +20,11 @@ class UserController extends \Yaf\Controller_Abstract {
     }
 
     public function oneAction() {
-        $request = $this->getRequest()->getParams();
-        var_dump($request['a']);exit;
+        //$request = $this->getRequest()->getParams();
+        //var_dump($request['a']);exit;
+
+        $user = User::find(1);
+
+        var_dump($user);exit;
     }
 }

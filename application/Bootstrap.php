@@ -1,4 +1,8 @@
 <?php
+
+use Illuminate\Events\Dispatcher as LDispatcher;
+use Illuminate\Container\Container as LContainer;
+use Illuminate\Database\Capsule\Manager as Capsule;
 /**
  * @name Bootstrap
  * @author longmsdu
@@ -9,10 +13,12 @@
  */
 class Bootstrap extends \Yaf\Bootstrap_Abstract{
 
+	public $config;
+
     public function _initConfig() {
 		//把配置保存起来
-		$arrConfig = \Yaf\Application::app()->getConfig();
-		\Yaf\Registry::set('config', $arrConfig);
+		$this->config = \Yaf\Application::app()->getConfig();
+		\Yaf\Registry::set('config', $this->config);
 	}
 
 	public function _initPlugin(\Yaf\Dispatcher $dispatcher) {
@@ -33,7 +39,22 @@ class Bootstrap extends \Yaf\Bootstrap_Abstract{
 	{
 		$autoload = APPLICATION_PATH . '/vendor/autoload.php';
 		if (file_exists($autoload)) {
-			\Yaf\loader::import($autoload);
+			\Yaf\Loader::import($autoload);
 		}
+	}
+
+	// 初始化 Eloquent ORM
+	public function _initDefaultDbAdapter(\Yaf\ Dispatcher $dispatcher)
+	{
+		$capsule = new Capsule();
+		$capsule->addConnection($this->config->database->toArray());
+		$capsule->setEventDispatcher(new LDispatcher(new LContainer));
+		$capsule->setAsGlobal();
+		$capsule->bootEloquent();
+	}
+
+	public function _initNamespaces(){
+		//申明, 凡是以Foo和Local开头的类, 都是本地类
+		//\Yaf\Loader::getInstance($this->config->application->library)->registerLocalNameSpace('Foo1');
 	}
 }
