@@ -7,33 +7,33 @@
  * 这些方法, 都接受一个参数:Yaf_Dispatcher $dispatcher
  * 调用的次序, 和申明的次序相同
  */
-class Bootstrap extends Yaf_Bootstrap_Abstract{
+class Bootstrap extends \Yaf\Bootstrap_Abstract{
 
     public function _initConfig() {
 		//把配置保存起来
-		$arrConfig = Yaf_Application::app()->getConfig();
-		Yaf_Registry::set('config', $arrConfig);
+		$arrConfig = \Yaf\Application::app()->getConfig();
+		\Yaf\Registry::set('config', $arrConfig);
 	}
 
-	public function _initPlugin(Yaf_Dispatcher $dispatcher) {
+	public function _initPlugin(\Yaf\Dispatcher $dispatcher) {
 		//注册一个插件
 		$objSamplePlugin = new SamplePlugin();
 		$dispatcher->registerPlugin($objSamplePlugin);
 	}
 
-	public function _initRoute(Yaf_Dispatcher $dispatcher) {
+	public function _initRoute(\Yaf\Dispatcher $dispatcher) {
 		//在这里注册自己的路由协议,默认使用简单路由
 	}
 	
-	public function _initView(Yaf_Dispatcher $dispatcher){
+	public function _initView(\Yaf\Dispatcher $dispatcher){
 		//在这里注册自己的view控制器，例如smarty,firekylin
 	}
 
-	function _initComposerAutoload(Yaf_Dispatcher $dispatcher)
+	function _initComposerAutoload(\Yaf\Dispatcher $dispatcher)
 	{
 		$autoload = APPLICATION_PATH . '/vendor/autoload.php';
 		if (file_exists($autoload)) {
-			Yaf_loader::import($autoload);
+			\Yaf\loader::import($autoload);
 		}
 	}
 }

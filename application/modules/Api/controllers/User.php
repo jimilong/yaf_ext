@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends Yaf_Controller_Abstract {
+class UserController extends \Yaf\Controller_Abstract {
 
     public function indexAction($name = "Stranger22") {
         //1. fetch query
